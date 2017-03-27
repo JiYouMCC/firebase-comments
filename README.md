@@ -19,17 +19,17 @@
 
 ## Database Rule ##
 
-{
-  "rules": {
-    ".read": true,
-        "comments": {            
-            "$comment":{              
-              ".write": "!data.exists()",
-              ".validate": "newData.child('uid').val() == auth.uid",
-              ".indexOn": ["pid", "date"]
-            }            
+    {
+      "rules": {
+        ".read": true,
+            "comments": {
+                ".indexOn": ["pid", "date"],
+                "$comment":{              
+                  ".write": "!data.exists()",
+                  ".validate": "newData.child('uid').val() == auth.uid"              
+                }
+            }
         }
     }
-}
 
 
