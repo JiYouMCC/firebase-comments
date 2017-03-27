@@ -135,7 +135,7 @@ Comments = {
                 Comments.handleCallback(callback, undefined);
             }
         },
-        add: function(postId, message, parentCommentId, callback) {
+        add: function(postId, message, parentCommentId, url, callback) {
             var user = Comments.user.get();
             if (user) {
                 var commentRef = Comments._sync.ref("/comments");
@@ -143,7 +143,7 @@ Comments = {
                     "date": Comments._timestamp,
                     "uid": user.uid,
                     "uname": Comments.user.displayName.get(),
-                    "uurl": null,
+                    "uurl": url,
                     "pid": postId,
                     "msg": message,
                     "pcid": parentCommentId
