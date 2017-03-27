@@ -9,10 +9,10 @@ Comments = {
             Comments._sync = firebase.database();
             Comments._timestamp = firebase.database.ServerValue.TIMESTAMP;
         } else if (type == "wilddog") {
-            wilddog.initializeApp(config);
-            Comments._auth = wilddog.auth();
-            Comments._sync = wilddog.sync();
-            Comments._timestamp = wilddog.sync().ServerValue.TIMESTAMP;
+            var app = wilddog.initializeApp(config);
+            Comments._auth = app.auth();
+            Comments._sync = app.sync();
+            Comments._timestamp = app.sync().ServerValue.TIMESTAMP;
         }
     },
     handleError: function(error) {
