@@ -1,0 +1,80 @@
+<script src="https://cdn.wilddog.com/sdk/js/2.5.0/wilddog.js"></script>
+<script src="/js/comments.min.js"></script>
+<h1>Comments</h1>
+<div id="login">
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <button>Register</button>
+</div>
+<div id="logout">
+  <span id="user"></span>
+  <input id="name" type="text">
+  <button onclick="changeName()">Change Name</button>
+  <button onclick="logout()">Logout</button>
+  <p>
+  <input id="url" type="url" placeholder="Your web site path"><br>
+  <textarea id="comment_message" placeholder="Your comment"></textarea><br>
+  <button onclick="addComment()">Comment</button>
+</div>
+<div id="comments"></div>
+<script type="text/javascript">
+  var config = {
+    authDomain: "blogcomments.wilddog.com",
+    syncURL: "https://blogcomments.wilddogio.com"
+  };
+  Comments.init("wilddog",config);
+
+  Comments.handleError = function(error) {
+    alert(error);
+  };
+
+  Comments.user.updateCallback(function(user) {
+    if (user) {
+      document.getElementById("logout").style.visibility = "";
+      document.getElementById("login").style.visibility = "hidden";
+      document.getElementById("user").innerHTML = Comments.user.displayName.get();
+      document.getElementById("name").value = Comments.user.displayName.get();
+    } else {
+      document.getElementById("logout").style.visibility = "hidden";
+      document.getElementById("login").style.visibility = "";
+    }
+  });
+
+  Comments.comment.listCallback("{{ page.id }}", function(messages) {
+    var div = document.getElementById("comments");
+    div.innerHTML = "";
+    for (commentId in messages) {
+      var comment = messages[commentId];
+      var div_comment = document.createElement("div");
+      var div_name = document.createElement("strong");
+      div_name.innerHTML = comment.uname;
+      var p_date = document.createElement("p");
+      p_date.innerHTML = new Date(parseInt(comment.date)).toDateString();
+      var div_message = document.createElement("div");
+      div_message.innerHTML = comment.msg;
+      div_comment.appendChild(div_name);
+      div_comment.appendChild(p_date);
+      div_comment.appendChild(div_message);
+      div.appendChild(div_comment);
+      div.insertBefore(div_comment, div.firstChild);
+    }
+  });
+
+  function login() {
+    Comments.user.login(document.getElementById("email").value, document.getElementById('password').value, null)
+  }
+
+  function logout() {
+    Comments.user.logout();
+  }
+
+  function changeName() {
+    Comments.user.displayName.set(document.getElementById('name').value);
+    document.getElementById('user').innerHTML = document.getElementById('name').value;
+  }
+
+  function addComment() {
+    Comments.comment.add('{{ page.id }}', document.getElementById('comment_message').value,null, document.getElementById('url').value, null);
+  }
+</script>
