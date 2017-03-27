@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+</head>
+<body>
+<h1>Users</h1>
+
+<div id="register">
+  <h1>Register</h1>
+  <table>
+    <tbody>
+      <tr>
+        <td><label>Email</label></td>
+        <td><input id="reg_email" type="email"></td>
+      </tr>
+      <tr>
+        <td><label>Password</label></td>
+        <td><input id="reg_pwd" type="password"></td>
+      </tr>
+    </tbody>
+  </table>
+  <button onclick="Comments.user.register(document.getElementById('reg_email').value,document.getElementById('reg_pwd').value, function(value){console.log(value)})">Register</button>
+</div>
+
+<div id="login">
+  <h1>Login</h1>
+  <table>
+    <tbody>
+      <tr>
+        <td><label>Email</label></td>
+        <td><input id="login_email" type="email"></td>
+      </tr>
+      <tr>
+        <td><label>Password</label></td>
+        <td><input id="login_pwd" type="password"></td>
+      </tr>
+    </tbody>
+  </table>
+  <button onclick="Comments.user.login(document.getElementById('login_email').value,document.getElementById('login_pwd').value, function(value){console.log(value)})">Login</button>
+</div>
+
+<div id="logout">
+  <h1>Logout</h1>
+  <div id="user"></div>
+  <button onclick="Comments.user.logout()">Logout</button>
+
+  <h1>Leave comments</h1>
+  <table>
+    <tbody>
+      <tr>
+        <td><label>message</label></td>
+        <td><textarea id="add_message" type="password"></textarea></td>
+      </tr>
+    </tbody>
+  </table>
+  <button onclick="Comments.comment.add('test', document.getElementById('add_message').value,null, function(value){console.log(value)})">Comment</button>
+</div>
+
+<div id="messages">
+  <h1>Recent 10 Messages</h1>
+  <div id="recent_messages"></div>
+
+  <h1>Test page comments</h1>
+  <div id="test_messages"></div>
+</div>
+
+</body>
+<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+<script src="js/comments.js"></script>
+<script>
+  var config = {
+    apiKey: "AIzaSyDE3Xjq8H8_sMLu-VQ8-D86pH67B3QsBpI",
+    authDomain: "blog-comments-fa868.firebaseapp.com",
+    databaseURL: "https://blog-comments-fa868.firebaseio.com",
+    storageBucket: "blog-comments-fa868.appspot.com",
+    messagingSenderId: "463015654208"
+  };
+  Comments.init("firebase",config);
+
+  Comments.user.updateCallback(function(user) {
+    if (user) {
+      document.getElementById("logout").style.visibility = "";
+      document.getElementById("register").style.visibility = "hidden";
+      document.getElementById("login").style.visibility = "hidden";
+      document.getElementById("user").innerHTML = Comments.user.displayName.get();
+    } else {
+      document.getElementById("logout").style.visibility = "hidden";
+      document.getElementById("register").style.visibility = "";
+      document.getElementById("login").style.visibility = "";
+    }
+  });
+
+  Comments.comment.recent.updateCallback(10, function(messages) {
+    var div = document.getElementById("recent_messages");
+    div.innerHTML = "";
+    var table = document.createElement("table");
+    var tbody = document.createElement("tbody");
+    for (commentId in messages) {
+      var comment = messages[commentId];
+      var tr = document.createElement("tr");
+      var td_name = document.createElement("td");
+      td_name.innerHTML = comment.uname;
+      var td_date = document.createElement("td");
+      td_date.innerHTML = new Date(parseInt(comment.date));
+      var td_message = document.createElement("td");
+      td_message.innerHTML = comment.msg;
+      var td_pid = document.createElement("td");
+      td_pid.innerHTML = comment.pid;
+      tr.appendChild(td_name);
+      tr.appendChild(td_date);
+      tr.appendChild(td_message);
+      tr.appendChild(td_pid);
+      tbody.insertBefore(tr, tbody.firstChild);
+    }
+
+    table.appendChild(tbody);
+    div.appendChild(table);
+  });
+
+  Comments.comment.listCallback("test", function(messages) {
+    var div = document.getElementById("test_messages");
+    div.innerHTML = "";
+    var table = document.createElement("table");
+    var tbody = document.createElement("tbody");
+    for (commentId in messages) {
+      var comment = messages[commentId];
+      var tr = document.createElement("tr");
+      var td_name = document.createElement("td");
+      td_name.innerHTML = comment.uname;
+      var td_date = document.createElement("td");
+      td_date.innerHTML = new Date(parseInt(comment.date));
+      var td_message = document.createElement("td");
+      td_message.innerHTML = comment.msg;
+      tr.appendChild(td_name);
+      tr.appendChild(td_date);
+      tr.appendChild(td_message);
+      tbody.insertBefore(tr, tbody.firstChild);
+    }
+
+    table.appendChild(tbody);
+    div.appendChild(table);
+  });
+</script>
+</html>
