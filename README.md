@@ -2,6 +2,15 @@
 
 Demo: http://www.jithee.name/jekyll-firebase-comments
 
+## To do list
+- guests can leave comments without login
+- reply logic
+- better setting of rule
+- enable to close comment to special post
+- gravatar
+- verify by number/sth like that
+- 500 limit
+
 ## comments json format ##
 
     
