@@ -6,17 +6,17 @@
   <input id="email" type="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
   <button onclick="login()">Login</button>
-  <button>Register</button>
+  <button onclick="register()">Register</button>
 </div>
 <div id="logout">
   <span id="user"></span>
   <input id="name" type="text">
   <button onclick="changeName()">Change Name</button>
   <button onclick="logout()">Logout</button>
-  <p>
-  <input id="url" type="url" placeholder="Your web site path"><br>
-  <textarea id="comment_message" placeholder="Your comment"></textarea><br>
-  <button onclick="addComment()">Comment</button>
+  <!-- <div id="reply">Reply to</div> -->
+  <div><input id="url" type="url" placeholder="Your web site path" style="width: 100%;"></div>
+  <div><textarea id="comment_message" placeholder="Your comment" style="width: 100%;height: 75px"></textarea></div>
+  <div><button onclick="addComment()">Comment</button></div>
 </div>
 <div id="comments"></div>
 <script type="text/javascript">
@@ -32,13 +32,13 @@
 
   Comments.user.updateCallback(function(user) {
     if (user) {
-      document.getElementById("logout").style.visibility = "";
-      document.getElementById("login").style.visibility = "hidden";
-      document.getElementById("user").innerHTML = Comments.user.displayName.get();
-      document.getElementById("name").value = Comments.user.displayName.get();
+      document.getElementById("logout").style.display = "";
+      document.getElementById("login").style.display = "none";
+      document.getElementById("user").innerHTML = htmlEscape(Comments.user.displayName.get());
+      document.getElementById("name").value = htmlEscape(Comments.user.displayName.get());
     } else {
-      document.getElementById("logout").style.visibility = "hidden";
-      document.getElementById("login").style.visibility = "";
+      document.getElementById("logout").style.display = "none";
+      document.getElementById("login").style.display = "";
     }
   });
 
@@ -49,14 +49,31 @@
       var comment = messages[commentId];
       var div_comment = document.createElement("div");
       var div_name = document.createElement("strong");
-      div_name.innerHTML = comment.uname;
-      var p_date = document.createElement("p");
-      p_date.innerHTML = new Date(parseInt(comment.date)).toDateString();
-      var div_message = document.createElement("div");
-      div_message.innerHTML = comment.msg;
-      div_comment.appendChild(div_name);
+      div_name.innerHTML = htmlEscape(comment.uname);
+      var uurl = comment.uurl;
+      if (uurl) {
+        var a = document.createElement("a");
+        a.href = uurl;
+        a.target = "_blank";
+        a.appendChild(div_name);
+        div_comment.appendChild(a);
+      } else {
+        div_comment.appendChild(div_name);
+      }
+      
+      var p_date = document.createElement("span");
+      p_date.innerHTML = " @ " + new Date(parseInt(comment.date)).toDateString() + " ";
+      var div_message = document.createElement("pre");
+      div_message.innerHTML = htmlEscape(comment.msg);
+      
       div_comment.appendChild(p_date);
+      /*var quote_button = document.createElement("button");
+      quote_button.innerHTML = "Reply";
+      quote_button.id = commentId;
+      div_comment.appendChild(quote_button);*/
       div_comment.appendChild(div_message);
+
+
       div.appendChild(div_comment);
       div.insertBefore(div_comment, div.firstChild);
     }
@@ -71,11 +88,24 @@
   }
 
   function changeName() {
-    Comments.user.displayName.set(document.getElementById('name').value);
-    document.getElementById('user').innerHTML = document.getElementById('name').value;
+    Comments.user.displayName.set(htmlEscape(document.getElementById('name').value));
+    document.getElementById('user').innerHTML = htmlEscape(document.getElementById('name').value);
   }
 
   function addComment() {
     Comments.comment.add('{{ page.id }}', document.getElementById('comment_message').value,null, document.getElementById('url').value, null);
   }
+
+  function register() {
+     Comments.user.register(document.getElementById("email").value, document.getElementById('password').value, null)
+  }
+
+  function htmlEscape(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
 </script>
