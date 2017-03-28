@@ -1,4 +1,6 @@
-# Jekyll Commnets using firebase/wilddog #
+# Jekyll Comments using firebase/wilddog #
+
+(Demo)[http://www.jithee.name/jekyll-firebase-comments]
 
 ## comments json format ##
 
