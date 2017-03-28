@@ -76,7 +76,8 @@
       }
       
       var p_date = document.createElement("span");
-      p_date.innerHTML = " @ " + new Date(parseInt(comment.date)).toDateString() + " ";
+      p_date.className += "post-meta";
+      p_date.innerHTML = " " + new Date(parseInt(comment.date)).toDateString() + " ";
       var div_message = document.createElement("pre");
       div_message.innerHTML = htmlEscape(comment.msg);
       
@@ -121,5 +122,5 @@
         .replace(/'/g, '&#39;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
-}
+  }
 </script>
