@@ -3,7 +3,7 @@
 <script src="{{ site.baseurl }}/js/comments.js"></script>
 <script src="{{ site.baseurl }}/js/avatar.js"></script>
 
-<h1>Comments</h1>
+<h1>Comments (<span id="count">?</span>)</h1>
 <div id="logout">
 <div><input id="name" type="text" placeholder="Your name" style="width: 100%;"></div>
 <div><input id="email" type="email" placeholder="Your email" style="width: 100%;"></div>
@@ -36,6 +36,10 @@
   Comments.handleError = function(error) {
     alert(error);
   };
+
+  Comments.post.commentCountCallback("{{ page.id }}", function(count){
+    document.getElementById('count').innerHTML = count;
+  })
 
   Comments.comment.listCallback("{{ page.id }}", function(messages) {
     var div = document.getElementById("comments");
