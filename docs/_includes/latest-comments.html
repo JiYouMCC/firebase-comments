@@ -1,21 +1,19 @@
-
-
-<!--<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>-->
-<script src="https://cdn.wilddog.com/sdk/js/2.5.2/wilddog.js"></script>
-<script src="{{ site.baseurl }}/js/comments.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+<!-- <script src="https://cdn.wilddog.com/sdk/js/2.5.2/wilddog.js"></script> -->
+<script src="{{ site.baseurl }}/js/comments.js"></script>
 
 <h1 class="page-heading">Latest 7 comments</h1>
 <div id="comments"></div>
 <script type="text/javascript">
   //Wilddog
-  var config = {
+/*  var config = {
     authDomain: "blogcomments.wilddog.com",
     syncURL: "https://blogcomments.wilddogio.com"
   };
-  Comments.init("wilddog", config);
+  Comments.init("wilddog", config);*/
   
   //firebase
-/*
+
   var config = {
     apiKey: "AIzaSyDE3Xjq8H8_sMLu-VQ8-D86pH67B3QsBpI",
     authDomain: "blog-comments-fa868.firebaseapp.com",
@@ -23,8 +21,8 @@
     storageBucket: "blog-comments-fa868.appspot.com",
     messagingSenderId: "463015654208"
   };
-  Comments.init("firebase",config);
-*/
+  Comments.init("firebase", config);
+
 
 Comments.comment.recent.updateCallback(7, function(messages) {
     var div = document.getElementById("comments");
@@ -33,14 +31,15 @@ Comments.comment.recent.updateCallback(7, function(messages) {
       var comment = messages[commentId];
       var div_comment = document.createElement("div");
       var div_name = document.createElement("strong");
-      div_name.innerHTML = htmlEscape(comment.uname);
-      div_name.title = new Date(parseInt(comment.date)).toDateString();
+      div_name.innerHTML = htmlEscape(comment.name);
+      div_name.title = new Date(parseInt(comment.timestamp)).toDateString();
       div_comment.appendChild(div_name);
 
-      var postId = comment.pid;
+      var postId = comment.post;
       var div_message = document.createElement("a");
       div_message.href = "{{ site.baseurl }}" + postId;
-      div_message.innerHTML = " " + htmlEscape(comment.msg).slice(0,20);
+      div_message.innerHTML = " " + htmlEscape(comment.comment).slice(0, 20);
+      div_message.title = htmlEscape(comment.comment);
       
       /*var quote_button = document.createElement("button");
       quote_button.innerHTML = "Reply";

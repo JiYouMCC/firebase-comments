@@ -1,6 +1,7 @@
 <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
 <!-- <script src="https://cdn.wilddog.com/sdk/js/2.5.2/wilddog.js"></script> -->
 <script src="{{ site.baseurl }}/js/comments.js"></script>
+<script src="{{ site.baseurl }}/js/avatar.js"></script>
 
 <h1>Comments</h1>
 <div id="logout">
@@ -41,6 +42,10 @@
     for (commentId in messages) {
       var comment = messages[commentId];
       var div_comment = document.createElement("div");
+      var div_image = document.createElement("img");
+      div_image.src = getGravatar(comment.email);
+      div_image.style.width = "20px";
+      div_comment.appendChild(div_image);
       var div_name = document.createElement("strong");
       div_name.innerHTML = htmlEscape(comment.name);
       var url = comment.url;

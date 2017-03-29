@@ -89,5 +89,16 @@ Comments = {
                 }
             }
         }
+    },
+    post : {
+        allowComment: function(postId, callback) {
+
+        },
+        commentCount: function(postId, callback) {
+
+        },
+        commentCountCallback: function(postId, callback) {
+            
+        }
     }
 }
