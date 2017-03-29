@@ -9,13 +9,17 @@ date:   2017-03-29 09:45:56 +0800
 - better setting of rule 修改访问规则，增加安全性
     - name require
     - email valid require
+    - url optional
     - post require
     - timestamp require
     - comment require
     - reply optional
-    - site 考虑中 可以让多个站点用一个firebase/wilddog账号？
 - enable to close comment to special post 设置允许评论 在jekyll里面设置更好？
 - gravatar 使用 https://secure.gravatar.com/
 - verify by number/sth like that 验证码或者图形防止垃圾信息
 - 500 limit 分页逻辑
 - delete 删除评论前台逻辑
+
+## refer ##
+
+https://flinhong.com/2017/03/25/self-host-comments-in-jekyll-using-firebase-database/ 

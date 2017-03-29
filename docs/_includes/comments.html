@@ -1,35 +1,26 @@
-<!--<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>-->
-<script src="https://cdn.wilddog.com/sdk/js/2.5.2/wilddog.js"></script>
-<script src="{{ site.baseurl }}/js/comments.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+<!-- <script src="https://cdn.wilddog.com/sdk/js/2.5.2/wilddog.js"></script> -->
+<script src="{{ site.baseurl }}/js/comments.js"></script>
 
 <h1>Comments</h1>
-<div id="login">
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <button onclick="register()">Register</button>
-</div>
 <div id="logout">
-  <span id="user"></span>
-  <input id="name" type="text">
-  <button onclick="changeName()">Change Name</button>
-  <button onclick="logout()">Logout</button>
-  <!-- <div id="reply">Reply to</div> -->
-  <div><input id="url" type="url" placeholder="Your web site path" style="width: 100%;"></div>
-  <div><textarea id="comment_message" placeholder="Your comment" style="width: 100%;height: 75px"></textarea></div>
-  <div><button onclick="addComment()">Comment</button></div>
+<div><input id="name" type="text" placeholder="Your name" style="width: 100%;"></div>
+<div><input id="email" type="email" placeholder="Your email" style="width: 100%;"></div>
+<div><input id="url" type="url" placeholder="Your web site path" style="width: 100%;"></div>
+<div><textarea id="comment" placeholder="Your comment" style="width: 100%;height: 75px"></textarea></div>
+<div><button onclick="addComment()">Comment</button></div>
 </div>
 <div id="comments"></div>
 <script type="text/javascript">
   //Wilddog
-  var config = {
+  /*var config = {
     authDomain: "blogcomments.wilddog.com",
     syncURL: "https://blogcomments.wilddogio.com"
   };
-  Comments.init("wilddog",config);
+  Comments.init("wilddog",config);*/
   
   //firebase
-/*
+
   var config = {
     apiKey: "AIzaSyDE3Xjq8H8_sMLu-VQ8-D86pH67B3QsBpI",
     authDomain: "blog-comments-fa868.firebaseapp.com",
@@ -38,23 +29,11 @@
     messagingSenderId: "463015654208"
   };
   Comments.init("firebase",config);
-*/
+
 
   Comments.handleError = function(error) {
     alert(error);
   };
-
-  Comments.user.updateCallback(function(user) {
-    if (user) {
-      document.getElementById("logout").style.display = "";
-      document.getElementById("login").style.display = "none";
-      document.getElementById("user").innerHTML = htmlEscape(Comments.user.displayName.get());
-      document.getElementById("name").value = htmlEscape(Comments.user.displayName.get());
-    } else {
-      document.getElementById("logout").style.display = "none";
-      document.getElementById("login").style.display = "";
-    }
-  });
 
   Comments.comment.listCallback("{{ page.id }}", function(messages) {
     var div = document.getElementById("comments");
@@ -63,11 +42,11 @@
       var comment = messages[commentId];
       var div_comment = document.createElement("div");
       var div_name = document.createElement("strong");
-      div_name.innerHTML = htmlEscape(comment.uname);
-      var uurl = comment.uurl;
-      if (uurl) {
+      div_name.innerHTML = htmlEscape(comment.name);
+      var url = comment.url;
+      if (url) {
         var a = document.createElement("a");
-        a.href = uurl;
+        a.href = url;
         a.target = "_blank";
         a.appendChild(div_name);
         div_comment.appendChild(a);
@@ -77,9 +56,9 @@
       
       var p_date = document.createElement("span");
       p_date.className += "post-meta";
-      p_date.innerHTML = " " + new Date(parseInt(comment.date)).toDateString() + " ";
+      p_date.innerHTML = " " + new Date(parseInt(comment.timestamp)).toDateString() + " ";
       var div_message = document.createElement("pre");
-      div_message.innerHTML = htmlEscape(comment.msg);
+      div_message.innerHTML = htmlEscape(comment.comment);
       
       div_comment.appendChild(p_date);
       /*var quote_button = document.createElement("button");
@@ -94,25 +73,12 @@
     }
   });
 
-  function login() {
-    Comments.user.login(document.getElementById("email").value, document.getElementById('password').value, null)
-  }
-
-  function logout() {
-    Comments.user.logout();
-  }
-
-  function changeName() {
-    Comments.user.displayName.set(htmlEscape(document.getElementById('name').value));
-    document.getElementById('user').innerHTML = htmlEscape(document.getElementById('name').value);
-  }
-
   function addComment() {
-    Comments.comment.add('{{ page.id }}', document.getElementById('comment_message').value,null, document.getElementById('url').value, null);
-  }
-
-  function register() {
-     Comments.user.register(document.getElementById("email").value, document.getElementById('password').value, null)
+    Comments.comment.add(document.getElementById('name').value,
+      document.getElementById('email').value,
+      '{{ page.id }}',
+       document.getElementById('comment').value,
+       document.getElementById('url').value, null, null);
   }
 
   function htmlEscape(str) {

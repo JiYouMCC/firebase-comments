@@ -16,14 +16,14 @@ Demo: http://www.jithee.name/jekyll-firebase-comments
     
     {
         "comments": {
-            commentId : {
-                date: timestamp,
-                uid:XXX,
-                uname: XXX,
-                uurl: XXX,
-                pid:XXX,
-                msg: XXXXX,
-                pcid:XXX
+            $commentid : {
+                name: "nickname",
+                email: "nickname@website.com",
+                post: "{{ post id }}",
+                timestamp: "{{ timestamp }}",
+                comment: "Hello World",
+                [url: "url",]
+                [reply: "another commentid"]
             }
         }
     }
@@ -33,11 +33,11 @@ Demo: http://www.jithee.name/jekyll-firebase-comments
     {
       "rules": {
         ".read": true,
-            "comments": {
-                ".indexOn": ["pid", "date"],
-                "$comment":{              
-                  ".write": "!data.exists()",
-                  ".validate": "newData.child('uid').val() == auth.uid"              
+        "comments": {
+            ".indexOn": ["post", "timestamp"],
+            "$commentid":{
+                ".write": "!data.exists()",
+                ".validate": "newData.child('name').val().length > 0 && newData.child('name').val().length < 20 && newData.child('name').isString() && newData.child('email').val().matches(/^[\\.a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$/) && newData.child('post').val().length > 0 && newData.child('comment').val().length > 0 && newData.child('comment').val().length < 2048 && newData.child('comment').isString() && newData.child('timestamp').isNumber()"
                 }
             }
         }
