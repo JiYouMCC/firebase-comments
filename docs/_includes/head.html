@@ -9,4 +9,18 @@
   <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
+
+  <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+<!-- <script src="https://cdn.wilddog.com/sdk/js/2.5.2/wilddog.js"></script> -->
+    <script src="{{ site.baseurl }}/js/comments.js"></script>
+    <script type="text/javascript">
+      var config = {
+        apiKey: "AIzaSyDE3Xjq8H8_sMLu-VQ8-D86pH67B3QsBpI",
+        authDomain: "blog-comments-fa868.firebaseapp.com",
+        databaseURL: "https://blog-comments-fa868.firebaseio.com",
+        storageBucket: "blog-comments-fa868.appspot.com",
+        messagingSenderId: "463015654208"
+      };
+      Comments.init("firebase",config);
+    </script>
 </head>

@@ -14,6 +14,12 @@ layout: default
         <h2>
           <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
         </h2>
+        <h3>Comments(<span id="comments_{{ post.id }}"></span>)</h3>
+        <script type="text/javascript">
+          Comments.post.commentCountCallback("{{ post.id }}", function(count){
+            document.getElementById('comments_{{ post.id }}').innerHTML = count;
+          })
+        </script>
       </li>
     {% endfor %}
   </ul>

@@ -1,6 +1,3 @@
-<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
-<!-- <script src="https://cdn.wilddog.com/sdk/js/2.5.2/wilddog.js"></script> -->
-<script src="{{ site.baseurl }}/js/comments.js"></script>
 <script src="{{ site.baseurl }}/js/avatar.js"></script>
 
 <h1>Comments (<span id="count">?</span>)</h1>
@@ -22,16 +19,6 @@
   Comments.init("wilddog",config);*/
   
   //firebase
-
-  var config = {
-    apiKey: "AIzaSyDE3Xjq8H8_sMLu-VQ8-D86pH67B3QsBpI",
-    authDomain: "blog-comments-fa868.firebaseapp.com",
-    databaseURL: "https://blog-comments-fa868.firebaseio.com",
-    storageBucket: "blog-comments-fa868.appspot.com",
-    messagingSenderId: "463015654208"
-  };
-  Comments.init("firebase",config);
-
 
   Comments.handleError = function(error) {
     alert(error);
