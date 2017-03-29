@@ -43,4 +43,3 @@ Demo: http://www.jithee.name/jekyll-firebase-comments
         }
     }
 
-
