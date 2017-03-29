@@ -4,9 +4,9 @@ title:  "To do list"
 date:   2017-03-29 09:45:56 +0800
 ---
 ## To do list ##
-- ~guests can leave comments without login 不用登陆也能评论（重构整个评论结构）~ Done
-- ~reply logic 回复评论~ Done （引用模式/盖楼模式？）
-- ~better setting of rule 修改访问规则，增加安全性~ Done
+- guests can leave comments without login 不用登陆也能评论（重构整个评论结构） Done
+- reply logic 回复评论 （引用模式/盖楼模式？）Done
+- better setting of rule 修改访问规则，增加安全性 Done
     - name require
     - email valid require
     - url optional
@@ -15,12 +15,12 @@ date:   2017-03-29 09:45:56 +0800
     - comment require
     - reply optional
 - enable to close comment to special post 设置允许评论 在jekyll里面设置更好？
-- ~gravatar 使用 https://secure.gravatar.com/~
+- gravatar 使用 https://secure.gravatar.com/ Done
 - verify by number/sth like that 验证码或者图形防止垃圾信息
 - 500 limit 分页逻辑
 - delete 删除评论前台逻辑
-- comments count 返回特定文章的评论数量
+- comments count 返回特定文章的评论数量 Done
 
 ## refer ##
 
-https://flinhong.com/2017/03/25/self-host-comments-in-jekyll-using-firebase-database/ 
+[https://flinhong.com/2017/03/25/self-host-comments-in-jekyll-using-firebase-database/](https://flinhong.com/2017/03/25/self-host-comments-in-jekyll-using-firebase-database/)

@@ -1,7 +1,7 @@
 <h1 class="page-heading">Latest 7 comments</h1>
 <div id="comments"></div>
 <script type="text/javascript">
-Comments.comment.recent.updateCallback(7, function(messages) {
+  Comments.comment.recent.updateCallback(7, function(messages) {
     var div = document.getElementById("comments");
     div.innerHTML = "";
     for (commentId in messages) {
@@ -17,11 +17,7 @@ Comments.comment.recent.updateCallback(7, function(messages) {
       div_message.href = "{{ site.baseurl }}" + postId;
       div_message.innerHTML = " " + htmlEscape(comment.comment).slice(0, 20);
       div_message.title = htmlEscape(comment.comment);
-      
-      /*var quote_button = document.createElement("button");
-      quote_button.innerHTML = "Reply";
-      quote_button.id = commentId;
-      div_comment.appendChild(quote_button);*/
+
       div_comment.appendChild(div_message);
 
 
