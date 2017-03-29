@@ -1,25 +1,26 @@
 ---
 layout: post
-title:  "Jekyll Test Post"
-date:   2017-03-27 21:51:11 +0800
-categories: jekyll update
+title:  "To do list"
+date:   2017-03-29 09:45:56 +0800
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+## To do list ##
+- guests can leave comments without login 不用登陆也能评论（重构整个评论结构）
+- reply logic 回复评论（引用模式/盖楼模式？）
+- better setting of rule 修改访问规则，增加安全性
+    - name require
+    - email valid require
+    - url optional
+    - post require
+    - timestamp require
+    - comment require
+    - reply optional
+- enable to close comment to special post 设置允许评论 在jekyll里面设置更好？
+- gravatar 使用 https://secure.gravatar.com/
+- verify by number/sth like that 验证码或者图形防止垃圾信息
+- 500 limit 分页逻辑
+- delete 删除评论前台逻辑
+- comments count 返回特定文章的评论数量
 
-To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+## refer ##
 
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
-
-[jekyll-docs]: http://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+https://flinhong.com/2017/03/25/self-host-comments-in-jekyll-using-firebase-database/ 
