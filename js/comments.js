@@ -27,10 +27,10 @@ Comments = {
         }
     },
     comment: {
-        list: function(postId, callback) {
+        list: function(post, callback) {
             // TODO pagenation
-            if (postId) {
-                Comments._sync.ref("/comments").orderByChild("post").equalTo(postId).once("value", function(snapshot) {
+            if (post) {
+                Comments._sync.ref("/comments").orderByChild("post").equalTo(post).once("value", function(snapshot) {
                     Comments.handleCallback(callback, snapshot.val());
                 });
             } else {
@@ -38,9 +38,9 @@ Comments = {
                 Comments.handleCallback(callback, undefined);
             }
         },
-        listCallback: function(postId, callback) {
-            if (postId) {
-                var returnCallback = Comments._sync.ref("/comments").orderByChild("post").equalTo(postId);
+        listCallback: function(post, callback) {
+            if (post) {
+                var returnCallback = Comments._sync.ref("/comments").orderByChild("post").equalTo(post);
                 returnCallback.on("value", function(snapshot) {
                     callback(snapshot.val());
                 });
@@ -50,23 +50,23 @@ Comments = {
                 Comments.handleCallback(callback, undefined);
             }
         },
-        add: function(name, email, postId, comment, url, reply, callback) {
-            Comments.post.commentCount.get(postId, function(Oldcount) {
+        add: function(name, email, post, comment, url, reply, callback) {
+            Comments.post.commentCount.get(post, function(Oldcount) {
                 var commentRef = Comments._sync.ref("/comments");
                 commentRef.push({
                     "name": name,
                     "email": email,
-                    "post": postId,
+                    "post": post,
                     "timestamp": Comments._timestamp,
                     "comment": comment,
-                    "url": url,
-                    "reply": reply
+                    "url": url ? url : null,
+                    "reply": reply ? reply : null
                 }).catch(function(error) {
                     Comments.handleError(error);
                     Comments.handleCallback(callback, undefined);
                 }).then(
                     function() {
-                        Comments.post.commentCount.set(postId, Oldcount + 1, function() {
+                        Comments.post.commentCount.set(post, Oldcount + 1, function() {
                             Comments.handleCallback(callback, true);
                         });
                     }
@@ -77,7 +77,6 @@ Comments = {
             _callback: undefined,
             get: function(count, callback) {
                 count = count ? count : 10;
-
                 Comments._sync.ref("/comments").orderByChild("timestamp").limitToLast(count).once("value", function(snapshot) {
                     Comments.handleCallback(callback, snapshot.val());
                 });
@@ -98,42 +97,50 @@ Comments = {
         }
     },
     post: {
-        allowComment: function(postId, callback) {
-
-        },
         commentCount: {
-            get: function(postId, callback) {
-                Comments._sync.ref("/posts/" + postId).once("value", function(snapshot) {
-                    var count = 0;
-                    if (snapshot && snapshot.val() && snapshot.val().commentCount) {
-                        count = snapshot.val().commentCount;
+            get: function(post, callback) {
+                Comments._sync.ref("/posts").orderByChild("post").equalTo(post).once("value", function(snapshot) {
+                    if (snapshot && snapshot.val()) {
+                        var flag = false;
+                        for (id in snapshot.val()) {
+                            Comments.handleCallback(callback, snapshot.val()[id].count);
+                            flag = true;
+                            break;
+                        }
+                        if (!flag) {
+                            Comments.handleCallback(callback, 0);
+                        }
+                    } else {
+                        Comments.handleCallback(callback, 0);
                     }
-
-                    Comments.handleCallback(callback, count);
                 });
             },
-            set: function(postId, count, callback) {
-                Comments._sync.ref("/posts/" + postId + "/commentCount").set(count, function(error) {
-                    if (error == null) {
-                        Comments.handleCallback(callback, true)
-                    } else {
-                        Comments.handleCallback(callback, false)
-                        Comments.handleError(error);
+            set: function(post, count, callback) {
+                Comments._sync.ref("/posts").orderByChild("post").equalTo(post).once("value", function(snapshot) {
+                    var flag = false;
+                    if (snapshot && snapshot.val()) {
+                        for (id in snapshot.val()) {
+                            Comments._sync.ref("/posts/" + id + "/count").set(count);
+                            flag = true;
+                            break;
+                        }
                     }
-                });
+                    if (!flag) {
+                        var postRef = Comments._sync.ref("/posts");
+                        postRef.push({
+                            "post": post,
+                            "count": count
+                        }, function(error) {
+                            if (error) {
+                                Comments.handleError(error);
+                                Comments.handleCallback(callback, false);
+                            } else {
+                                Comments.handleCallback(callback, true);
+                            }
+                        });
+                    }
+                })
             }
-        },
-        commentCountCallback: function(postId, callback) {
-            var returnCallback = Comments._sync.ref("/posts/" + postId)
-            returnCallback.on("value", function(snapshot) {
-                var count = 0;
-                if (snapshot && snapshot.val() && snapshot.val().commentCount) {
-                    count = snapshot.val().commentCount;
-                }
-
-                Comments.handleCallback(callback, count);
-            });
-            return returnCallback;
         }
     }
 }
