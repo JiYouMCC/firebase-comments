@@ -8,6 +8,7 @@
 <div><input id="name" type="text" placeholder="Your name" style="width: 100%;"></div>
 <div><input id="email" type="email" placeholder="Your email" style="width: 100%;"></div>
 <div><input id="url" type="url" placeholder="Your web site path" style="width: 100%;"></div>
+<div><input id="reply" type="text" style="width: 50%;" disabled=""><button onclick="document.getElementById('reply').value=''">clear</button></div>
 <div><textarea id="comment" placeholder="Your comment" style="width: 100%;height: 75px"></textarea></div>
 <div><button onclick="addComment()">Comment</button></div>
 </div>
@@ -62,14 +63,42 @@
       var p_date = document.createElement("span");
       p_date.className += "post-meta";
       p_date.innerHTML = " " + new Date(parseInt(comment.timestamp)).toDateString() + " ";
-      var div_message = document.createElement("pre");
-      div_message.innerHTML = htmlEscape(comment.comment);
-      
       div_comment.appendChild(p_date);
-      /*var quote_button = document.createElement("button");
-      quote_button.innerHTML = "Reply";
-      quote_button.id = commentId;
-      div_comment.appendChild(quote_button);*/
+
+      var p_reply = document.createElement("button");
+      p_reply.innerHTML = "Reply";
+      p_reply.onclick = function(){document.getElementById('reply').value=commentId;}
+      div_comment.appendChild(p_reply);
+
+      var reply = comment.reply;
+
+      if (reply) {
+        var div_reply = document.createElement("div");
+        var pre_comment = messages[reply];
+        console.log(pre_comment);
+        if (pre_comment) {
+          var reply_title = document.createElement("p");
+          reply_title.innerHTML = "引用 <i>"+htmlEscape(pre_comment.name)+"</i> 的发言:"
+          div_reply.appendChild(reply_title);
+          var reply_comment = document.createElement("pre");
+          reply_comment.style.background = "#eef";
+          reply_comment.style.padding = "5px";
+          reply_comment.style.marginLeft = "25px";
+          reply_comment.style.borderRadius = "5px";
+          reply_comment.style.wordWarp = "normal";
+          reply_comment.innerHTML = htmlEscape(pre_comment.comment);
+          div_reply.appendChild(reply_comment);
+          div_comment.appendChild(div_reply);
+        }
+      }
+
+      var div_message = document.createElement("pre");
+      div_message.style.background = "#eef";
+      div_message.style.padding = "5px";
+      div_message.style.borderRadius = "5px";
+      div_message.style.wordWarp = "normal";
+      div_message.innerHTML = htmlEscape(comment.comment);
+
       div_comment.appendChild(div_message);
 
 
@@ -83,7 +112,9 @@
       document.getElementById('email').value,
       '{{ page.id }}',
        document.getElementById('comment').value,
-       document.getElementById('url').value, null, null);
+       document.getElementById('url').value, 
+       document.getElementById('reply').value, 
+       null);
   }
 
   function htmlEscape(str) {
