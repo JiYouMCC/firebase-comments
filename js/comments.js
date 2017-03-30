@@ -51,7 +51,7 @@ Comments = {
             }
         },
         add: function(name, email, post, comment, url, reply, callback) {
-            Comments.post.commentCount.get(post, function(Oldcount) {
+            Comments.post.commentCount.get(post, function(oldCount) {
                 var commentRef = Comments._sync.ref("/comments");
                 commentRef.push({
                     "name": name,
@@ -61,16 +61,16 @@ Comments = {
                     "comment": comment,
                     "url": url ? url : null,
                     "reply": reply ? reply : null
-                }).catch(function(error) {
-                    Comments.handleError(error);
-                    Comments.handleCallback(callback, undefined);
-                }).then(
-                    function() {
-                        Comments.post.commentCount.set(post, Oldcount + 1, function() {
+                }, function(error) {
+                    if (error) {
+                        Comments.handleError(error);
+                        Comments.handleCallback(callback, false);
+                    } else {
+                        Comments.post.commentCount.set(post, oldCount + 1, function() {
                             Comments.handleCallback(callback, true);
                         });
                     }
-                );
+                });
             });
         },
         recent: {
@@ -99,47 +99,38 @@ Comments = {
     post: {
         commentCount: {
             get: function(post, callback) {
-                Comments._sync.ref("/posts").orderByChild("post").equalTo(post).once("value", function(snapshot) {
-                    if (snapshot && snapshot.val()) {
-                        var flag = false;
-                        for (id in snapshot.val()) {
-                            Comments.handleCallback(callback, snapshot.val()[id].count);
-                            flag = true;
-                            break;
-                        }
-                        if (!flag) {
-                            Comments.handleCallback(callback, 0);
-                        }
-                    } else {
-                        Comments.handleCallback(callback, 0);
+                Comments._sync.ref("/posts/" + post).once("value", function(snapshot) {
+                    var count = 0;
+                    if (snapshot && snapshot.val() && snapshot.val().count) {
+                        count = snapshot.val().count
                     }
+
+                    Comments.handleCallback(callback, count);
                 });
             },
             set: function(post, count, callback) {
-                Comments._sync.ref("/posts").orderByChild("post").equalTo(post).once("value", function(snapshot) {
-                    var flag = false;
-                    if (snapshot && snapshot.val()) {
-                        for (id in snapshot.val()) {
-                            Comments._sync.ref("/posts/" + id + "/count").set(count);
-                            flag = true;
-                            break;
-                        }
+                Comments._sync.ref("/posts/" + post).set({
+                    "count": count
+                }, function(error) {
+                    if (error) {
+                        Comments.handleError(error);
+                        Comments.handleCallback(callback, false);
+                    } else {
+                        Comments.handleCallback(callback, true);
                     }
-                    if (!flag) {
-                        var postRef = Comments._sync.ref("/posts");
-                        postRef.push({
-                            "post": post,
-                            "count": count
-                        }, function(error) {
-                            if (error) {
-                                Comments.handleError(error);
-                                Comments.handleCallback(callback, false);
-                            } else {
-                                Comments.handleCallback(callback, true);
-                            }
-                        });
+                });
+            },
+            updateCallback(post, callback) {
+                var returnCallback = Comments._sync.ref("/posts/" + post);
+                returnCallback.on("value", function(snapshot) {
+                    var count = 0;
+                    if (snapshot && snapshot.val() && snapshot.val().count) {
+                        count = snapshot.val().count
                     }
-                })
+
+                    Comments.handleCallback(callback, count);
+                });
+                return returnCallback;
             }
         }
     }

@@ -7,7 +7,7 @@
 <div><input id="url" type="url" placeholder="Your web site path" style="width: 100%;"></div>
 <div><input id="reply" type="text" style="width: 50%;" disabled=""><button onclick="document.getElementById('reply').value=''">clear</button></div>
 <div><textarea id="comment" placeholder="Your comment" style="width: 100%;height: 75px"></textarea></div>
-<div><button onclick="addComment()">Comment</button></div>
+<div><button id="button_comment" onclick="addComment()">Comment</button></div>
 </div>
 <div id="comments"></div>
 <script type="text/javascript">
@@ -53,7 +53,6 @@
       if (reply) {
         var div_reply = document.createElement("div");
         var pre_comment = messages[reply];
-        console.log(pre_comment);
         if (pre_comment) {
           var reply_title = document.createElement("p");
           reply_title.innerHTML = "引用 <i>"+htmlEscape(pre_comment.name)+"</i> 的发言:"
@@ -86,13 +85,21 @@
   });
 
   function addComment() {
+    document.getElementById('button_comment').disabled = "disabled";
     Comments.comment.add(document.getElementById('name').value,
       document.getElementById('email').value,
       '{{ page.id }}',
        document.getElementById('comment').value,
        document.getElementById('url').value, 
        document.getElementById('reply').value, 
-       null);
+       function(result){
+          if (result) {
+            document.getElementById('comment').value = "";
+          }
+            document.getElementById('button_comment').disabled = "";
+            
+
+       });
   }
 
   function htmlEscape(str) {

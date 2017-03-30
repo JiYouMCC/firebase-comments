@@ -34,12 +34,24 @@ Demo: http://www.jithee.name/jekyll-firebase-comments
       "rules": {
         ".read": true,
         "comments": {
-            ".indexOn": ["post", "timestamp"],
-            "$commentid":{
-                ".write": "!data.exists()",
-                ".validate": "newData.child('name').val().length > 0 && newData.child('name').val().length < 20 && newData.child('name').isString() && newData.child('email').val().matches(/^[\\.a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$/) && newData.child('post').val().length > 0 && newData.child('comment').val().length > 0 && newData.child('comment').val().length < 2048 && newData.child('comment').isString() && newData.child('timestamp').isNumber()"
+          ".indexOn": ["post", "timestamp"],
+          "$commentid": {
+            ".write": "!data.exists() && newData.hasChild('name') && newData.hasChild('email') && newData.hasChild('post') && newData.hasChild('comment')",
+            ".validate": "newData.child('name').val().length > 0 && newData.child('name').val().length < 20 && newData.child('name').isString() && newData.child('email').val().matches(/^[\\.a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$/) && newData.child('post').val().length > 0 && newData.child('comment').val().length > 0 && newData.child('comment').val().length < 2048 && newData.child('comment').isString() && newData.child('timestamp').isNumber()"
+          }
+        },
+        "posts": {
+          "$year":{
+            "$month":{
+              "$day":{
+                "$title":{
+                  ".write": "newData.hasChild('count')",
+                  ".validate": "newData.child('count').isNumber() && newData.child('count').val() >= 0"
                 }
+              }
             }
+          }
         }
+      }
     }
 

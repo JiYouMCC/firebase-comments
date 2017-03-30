@@ -16,7 +16,7 @@ layout: default
         </h2>
         <h3>Comments(<span id="comments_{{ post.id }}"></span>)</h3>
         <script type="text/javascript">
-          Comments.post.commentCount.get("{{ post.id }}", function(count){
+          Comments.post.commentCount.updateCallback("{{ post.id }}", function(count){
             document.getElementById('comments_{{ post.id }}').innerHTML = count;
           })
         </script>
