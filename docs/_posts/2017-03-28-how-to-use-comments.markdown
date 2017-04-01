@@ -33,7 +33,6 @@ date:   2017-03-28 12:31:11 +0800
   }
 }
 {% endhighlight %}
-{% endhighlight %}
 1 Copy [comments.js](https://github.com/JiYouMCC/jekyll-firebase-comments/blob/master/js/comments.js) to /js. Of course, you can do something like:
     - Minify javascripts
     - Translate error messages:
