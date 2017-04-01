@@ -13,20 +13,49 @@ Demo: http://www.jithee.name/jekyll-firebase-comments
 
 ## comments json format ##
 
-    
-    {
-        "comments": {
-            $commentid : {
-                name: "nickname",
-                email: "nickname@website.com",
-                post: "{{ post id }}",
-                timestamp: "{{ timestamp }}",
-                comment: "Hello World",
-                [url: "url",]
-                [reply: "another commentid"]
+  {
+    "comments" : {
+      "-KgccDhWMR14MzcFoKnU" : {
+        "comment" : "Hello World",
+        "email" : "nightghostjiyou@gmail.com",
+        "name" : "JiYouMCC",
+        "post" : "/2017/03/29/to-do-list",
+        "timestamp" : 1491035286677
+      },
+      "-KgccIGBbwzwFVXwhrN_" : {
+        "comment" : "Reply Hello World",
+        "email" : "nightghostjiyou@gmail.com",
+        "name" : "JiYouMCC",
+        "post" : "/2017/03/29/to-do-list",
+        "reply" : "-KgccDhWMR14MzcFoKnU",
+        "timestamp" : 1491035305348
+      },
+      "-KgccPJQhA0dJkti49la" : {
+        "comment" : "How to use it",
+        "email" : "nightghostjiyou@gmail.com",
+        "name" : "JiYouMCC",
+        "post" : "/2017/03/28/how-to-use-comments-cn",
+        "timestamp" : 1491035334230
+      }
+    },
+    "posts" : {
+      "2017" : {
+        "03" : {
+          "28" : {
+            "how-to-use-comments-cn" : {
+              "count" : 1
             }
+          },
+          "29" : {
+            "to-do-list" : {
+              "count" : 2
+            }
+          }
         }
+      }
     }
+  }
+
 
 ## Database Rule ##
 

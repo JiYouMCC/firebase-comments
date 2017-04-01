@@ -20,7 +20,8 @@ date:   2017-03-29 09:45:56 +0800
 - 500 limit 分页逻辑
 - delete 删除评论前台逻辑
 - <s>comments count </s>返回特定文章的评论数量 Done
-- Error handle 错误代码处理
+- <s>Error handle 错误代码处理</s> Done
+- callback改写成promise
 
 ## refer ##
 
