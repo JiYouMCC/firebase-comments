@@ -51,8 +51,8 @@ Comments = {
                     var comments_array = []
                     for (commentId in comments) {
                         var comment = comments[commentId];
-                        comments["id"] = commentId;
-                        comments_array.push(comments);
+                        comment["id"] = commentId;
+                        comments_array.push(comment);
                     }
 
                     comments_array.sort(function(comment1, comment2) {
