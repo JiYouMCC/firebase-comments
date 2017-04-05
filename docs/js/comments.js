@@ -174,7 +174,7 @@ Comments = {
                 }
             }
         },
-        convertFromDuoshuo(source) {
+        convertFromDuoshuo: function(source) {
             var source = JSON.parse(source);
             var result = {
                 "comments": {}
@@ -193,11 +193,11 @@ Comments = {
                 result_comment.timestamp = parseInt(new Date(source_comment.created_at).getTime());
                 result_comment.comment = source_comment.message;
                 target[source_comment.post_id] = result_comment;
-
             }
+
             return (result);
         },
-        transferFromDuoShuo(source, callback) {
+        transferFromDuoShuo: function(source, callback) {
             var sourceJson = Comments.comment.convertFromDuoshuo(source)
             Comments._sync.ref("/comments").update(sourceJson.comments, function(error) {
                 if (error) {
