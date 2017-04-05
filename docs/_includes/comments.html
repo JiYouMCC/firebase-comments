@@ -19,7 +19,7 @@
     var div = document.getElementById("comments");
     div.innerHTML = "";
     for (var i = 0; i < messages.length; i++) {
-      var comment = messages[0];
+      var comment = messages[i];
       var commentId = comment.id;
       var div_comment = document.createElement("div");
       var div_image = document.createElement("img");
