@@ -236,8 +236,8 @@ Comments = {
                     var comments = snapshot.val();
                     var commentCount = {};
 
-                    for (var i = 0; i < comments.length; i++) {
-                        var comment = comments[i];
+                    for (commentId in comments){
+                        var comment = comments[commentId];
                         var postPath = comment.post.splid("/");
                         for (var j = 0; j < postPath.length;) {
                             var path = postPath[j];
