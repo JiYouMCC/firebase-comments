@@ -238,7 +238,7 @@ Comments = {
 
                     for (commentId in comments){
                         var comment = comments[commentId];
-                        var postPath = comment.post.splid("/");
+                        var postPath = comment.post.split("/");
                         for (var j = 0; j < postPath.length;) {
                             var path = postPath[j];
                             if (path == "") {
