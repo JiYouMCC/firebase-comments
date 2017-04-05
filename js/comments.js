@@ -264,7 +264,14 @@ Comments = {
                         }
                     }
 
-                    console.log(commentCount);
+                    Comments._sync.ref("/posts").set(commentCount, function(error) {
+                    if (error) {
+                        Comments.handleError(error);
+                        Comments.handleCallback(callback, false);
+                    } else {
+                        Comments.handleCallback(callback, true);
+                    }
+                });
                 });
             }
         }
