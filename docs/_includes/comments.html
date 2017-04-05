@@ -18,8 +18,9 @@
   Comments.comment.listCallback("{{ page.id }}", function(messages) {
     var div = document.getElementById("comments");
     div.innerHTML = "";
-    for (commentId in messages) {
-      var comment = messages[commentId];
+    for (var i = 0; i < messages.length; i++) {
+      var comment = messages[0];
+      var commentId = comment.id;
       var div_comment = document.createElement("div");
       var div_image = document.createElement("img");
       div_image.src = getGravatar(comment.email);

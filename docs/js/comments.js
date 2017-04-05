@@ -58,8 +58,7 @@ Comments = {
                     comments_array.sort(function(comment1, comment2) {
                         return comment1.timestamp > comment2.timestamp
                     });
-                    console.log(comments_array);
-                    Comments.handleCallback(callback, snapshot.val());
+                    Comments.handleCallback(callback, comments_array);
                 });
             } else {
                 Comments.handleError(Comments.errors.NO_POST);
@@ -70,7 +69,18 @@ Comments = {
             if (post) {
                 var returnCallback = Comments._sync.ref("/comments").orderByChild("post").equalTo(post);
                 returnCallback.on("value", function(snapshot) {
-                    callback(snapshot.val());
+                    var comments = snapshot.val();
+                    var comments_array = []
+                    for (commentId in comments) {
+                        var comment = comments[commentId];
+                        comment["id"] = commentId;
+                        comments_array.push(comment);
+                    }
+
+                    comments_array.sort(function(comment1, comment2) {
+                        return comment1.timestamp > comment2.timestamp
+                    });
+                    Comments.handleCallback(callback, comments_array);
                 });
                 return returnCallback;
             } else {
