@@ -54,7 +54,6 @@ Comments = {
         commentsArray.sort(function(comment1, comment2) {
             return comment1.timestamp > comment2.timestamp
         });
-        Comments.handleCallback(callback, commentsArray);
         return commentsArray;
     },
     comment: {
