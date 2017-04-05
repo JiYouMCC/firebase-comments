@@ -236,7 +236,7 @@ Comments = {
                     var comments = snapshot.val();
                     var commentCount = {};
 
-                    for (commentId in comments){
+                    for (commentId in comments) {
                         var comment = comments[commentId];
                         var postPath = comment.post.split("/");
                         for (var j = 0; j < postPath.length;) {
@@ -265,13 +265,13 @@ Comments = {
                     }
 
                     Comments._sync.ref("/posts").set(commentCount, function(error) {
-                    if (error) {
-                        Comments.handleError(error);
-                        Comments.handleCallback(callback, false);
-                    } else {
-                        Comments.handleCallback(callback, true);
-                    }
-                });
+                        if (error) {
+                            Comments.handleError(error);
+                            Comments.handleCallback(callback, false);
+                        } else {
+                            Comments.handleCallback(callback, true);
+                        }
+                    });
                 });
             }
         }
