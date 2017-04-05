@@ -242,6 +242,7 @@ Comments = {
                 return returnCallback;
             },
             check: function(callback) {
+                // please allow posts .write: true
                 Comments._sync.ref("/comments").once("value", function(snapshot) {
                     if (!snapshot) {
                         Comments.handleCallback(callback, false);

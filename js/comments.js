@@ -42,24 +42,26 @@ Comments = {
             callback(returnValue)
         }
     },
+    _convertDicToSortedArray: function(comments) {
+        // order by timestamp
+        var commentsArray = []
+        for (commentId in comments) {
+            var comment = comments[commentId];
+            comment["id"] = commentId;
+            commentsArray.push(comment);
+        }
+
+        commentsArray.sort(function(comment1, comment2) {
+            return comment1.timestamp > comment2.timestamp
+        });
+        return commentsArray;
+    },
     comment: {
         list: function(post, callback) {
             // TODO pagenation
             if (post) {
                 Comments._sync.ref("/comments").orderByChild("post").equalTo(post).once("value", function(snapshot) {
-                    var comments = snapshot.val();
-                    var comments_array = []
-                    for (commentId in comments) {
-                        var comment = comments[commentId];
-                        comments["id"] = commentId;
-                        comments_array.push(comments);
-                    }
-
-                    comments_array.sort(function(comment1, comment2) {
-                        return comment1.timestamp < comment2.timestamp
-                    });
-                    console.log(comments_array);
-                    Comments.handleCallback(callback, snapshot.val());
+                    Comments.handleCallback(callback, Comments._convertDicToSortedArray(snapshot.val()));
                 });
             } else {
                 Comments.handleError(Comments.errors.NO_POST);
@@ -70,7 +72,7 @@ Comments = {
             if (post) {
                 var returnCallback = Comments._sync.ref("/comments").orderByChild("post").equalTo(post);
                 returnCallback.on("value", function(snapshot) {
-                    callback(snapshot.val());
+                    Comments.handleCallback(callback, Comments._convertDicToSortedArray(snapshot.val()));
                 });
                 return returnCallback;
             } else {
@@ -154,14 +156,15 @@ Comments = {
             get: function(count, callback) {
                 count = count ? count : 10;
                 Comments._sync.ref("/comments").orderByChild("timestamp").limitToLast(count).once("value", function(snapshot) {
-                    Comments.handleCallback(callback, snapshot.val());
+
+                    Comments.handleCallback(callback, Comments._convertDicToSortedArray(snapshot.val()));
                 });
             },
             updateCallback: function(count, callback) {
                 Comments.comment.recent.removeCallback();
                 Comments.comment._callback = Comments._sync.ref("/comments").orderByChild("timestamp").limitToLast(count);
                 Comments.comment._callback.on("value", function(snapshot) {
-                    callback(snapshot.val());
+                    Comments.handleCallback(callback, Comments._convertDicToSortedArray(snapshot.val()));
                 });
             },
             removeCallback: function() {
@@ -239,6 +242,7 @@ Comments = {
                 return returnCallback;
             },
             check: function(callback) {
+                // please allow posts .write: true
                 Comments._sync.ref("/comments").once("value", function(snapshot) {
                     if (!snapshot) {
                         Comments.handleCallback(callback, false);
