@@ -173,6 +173,44 @@ Comments = {
                     Comments.comment._callback = undefined;
                 }
             }
+        },
+        convertFromDuoshuo(source) {
+            var source = JSON.parse(source);
+            var result = {
+                "comments": {}
+            };
+            var target = result.comments;
+            for (var i = 0; i < source.posts.length; i++) {
+                var source_comment = source.posts[i];
+                var result_comment = {};
+                result_comment.name = source_comment.author_name;
+                result_comment.email = source_comment.author_email;
+                if (source_comment.author_url) {
+                    result_comment.url = source_comment.author_url;
+                }
+
+                result_comment.post = source_comment.thread_key;
+                result_comment.timestamp = parseInt(new Date(source_comment.created_at).getTime());
+                result_comment.comment = source_comment.message;
+                target[source_comment.post_id] = result_comment;
+
+            }
+            return (result);
+        },
+        transferFromDuoShuo(source, callback) {
+            var sourceJson = Comments.comment.convertFromDuoshuo(source)
+            Comments._sync.ref("/comments").update(sourceJson.comments, function(error) {
+                if (error) {
+                    Comments.handleError(error);
+                    Comments.handleCallback(callback, false);
+                } else {
+                    Comments.post.commentCount.check(function(result) {
+                        if (result) {
+                            Comments.handleCallback(callback, true);
+                        }
+                    })
+                }
+            });
         }
     },
     post: {
