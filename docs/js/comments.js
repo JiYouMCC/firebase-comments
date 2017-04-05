@@ -56,7 +56,7 @@ Comments = {
                     }
 
                     comments_array.sort(function(comment1, comment2) {
-                        return comment1.timestamp < comment2.timestamp
+                        return comment1.timestamp > comment2.timestamp
                     });
                     console.log(comments_array);
                     Comments.handleCallback(callback, snapshot.val());
