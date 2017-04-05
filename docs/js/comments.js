@@ -47,6 +47,18 @@ Comments = {
             // TODO pagenation
             if (post) {
                 Comments._sync.ref("/comments").orderByChild("post").equalTo(post).once("value", function(snapshot) {
+                    var comments = snapshot.val();
+                    var comments_array = []
+                    for (commentId in comments) {
+                        var comment = comments[commentId];
+                        comments["id"] = commentId;
+                        comments_array.push(comments);
+                    }
+
+                    comments_array.sort(function(comment1, comment2) {
+                        return comment1.timestamp < comment2.timestamp
+                    });
+                    console.log(comments_array);
                     Comments.handleCallback(callback, snapshot.val());
                 });
             } else {
