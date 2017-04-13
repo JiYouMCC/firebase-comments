@@ -1,6 +1,6 @@
-# Jekyll Comments using firebase/wilddog #
+# Comments using firebase/wilddog #
 
-Demo: http://www.jithee.name/jekyll-firebase-comments
+Demo: http://www.jithee.name/firebase-comments
 
 ## To do list
 - verify by number/sth like that
