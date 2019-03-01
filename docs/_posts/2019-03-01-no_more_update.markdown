@@ -11,7 +11,11 @@ date:   2019-03-01 9:00:00 +0800
 
 野狗基本上是凉凉了，会用的人也是用firebase吧。
 
-我自己的blog已经转用github的api直接调用issue和comments了，如果感兴趣的人可以看看https://github.com/JiYouMCC/github-comments 
+我自己的blog已经转用github的api直接调用issue和comments了，如果感兴趣的人可以看看[https://github.com/JiYouMCC/github-comments ](https://github.com/JiYouMCC/github-comments)
+
+然后发现因为repo改名字，重新部署的demo有点问题，稍微修正了下。
+
+其他的TODO什么再说，最近没空弄。
 
 I visited here recently and found there're some comments here. :)
 
@@ -21,4 +25,5 @@ You can leave issues here if there's questions/bugs.
 
 Wilddog seems become stop.
 
-I use Github API to call issues and comments in my own blog. If insterested in it, visit https://github.com/JiYouMCC/github-comments
+I use Github API to call issues and comments in my own blog. If insterested in it, visit [https://github.com/JiYouMCC/github-comments ](https://github.com/JiYouMCC/github-comments)
+
