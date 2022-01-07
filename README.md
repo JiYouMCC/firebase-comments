@@ -1,6 +1,6 @@
 # Comments using firebase/wilddog #
 
-Demo: http://www.jithee.name/firebase-comments
+Demo: https://jiyoumcc.github.io/firebase-comments/
 
 ## To do list
 - verify by number/sth like that
